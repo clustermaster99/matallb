@@ -1,3 +1,8 @@
+kubectl create secret generic grafana-admin-secret \
+  --namespace monitoring \
+  --from-literal=admin-user=admin \
+  --from-literal=admin-password=your-secure-password
+
 helm upgrade prometheus-stack prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   --reuse-values \
