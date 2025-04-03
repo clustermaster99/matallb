@@ -1,0 +1,24 @@
+prometheus:
+  prometheusSpec:
+    service:
+      type: LoadBalancer  # Use MetalLB
+      port: 9090
+    # Disable etcd monitoring (K3s uses SQLite)
+    additionalScrapeConfigs:
+      - job_name: 'k3s-server'
+        static_configs:
+          - targets: ['localhost:10252']  # Kube Controller Manager
+          - targets: ['localhost:10251']  # Kube Scheduler
+
+defaultRules:
+  rules:
+    etcd: false
+kubeEtcd:
+  enabled: false
+grafana:
+  service:
+    type: LoadBalancer
+    port: 80
+  admin:
+    existingSecret: grafana-admin-secret  # Name of the Secret
+    passwordKey: admin-password          # Key within the Secret
